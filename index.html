@@ -42,6 +42,7 @@
 						<ul>
 							<li class="fragment">Contributor to Prometheus time series database project</li>
 							<li class="fragment">Researched and published work around optimizing `/catalogsearch/result/index`</li>
+							<li class="fragment">Built Domain Clamp - SaaS tool for monitoring / notifications of Domain and SSL certificates</li>
 						</ul>
 						</ul>
 					</script>
@@ -68,11 +69,11 @@
 						</script>
 					</section>
 				</section>
-				<!-- 4. How Does It Work? -->
+				<!-- 4. How Do We Hit It? -->
 				<section>
 					<section data-markdown>
 						<script type="text/template">
-						## How Does It Work?
+						## How Do We Hit It?
 						</script>
 					</section>
 					<section data-markdown>
@@ -121,7 +122,7 @@
 					</section>
 					<section data-markdown>
 						<script type="text/template">
-						### How `Enterprise_PageCache` extracts content...
+						### How `Enterprise_PageCache` tries to `extractContent()`...
 						```php
 						// Enterprise_PageCache_Model_Processor::extractContent()
 						$subprocessorClass = $this->getMetadata('cache_subprocessor');
@@ -232,7 +233,7 @@
 					</section>
 					<section data-markdown>
 						<script type="text/template">
-						### What process containers does...
+						### What `_processContainers()` does...
 						```php
 						// Enterprise_PageCache_Model_Processor_Default::_processContainers()
 						$placeholders = array();
@@ -268,7 +269,7 @@
 					</section>
 					<section data-markdown>
 						<script type="text/template">
-						### Loading the containers...
+						### How containers try to `applyWithoutApp()`
 						```php
 						// Enterprise_PageCache_Model_Container_Abstract::applyWithoutApp()
 						$cacheId = $this->_getCacheId();
@@ -291,7 +292,7 @@
 					</section>
 					<section data-markdown>
 						<script type="text/template">
-						### Getting the cache id
+						### How containers generate the `cacheId`
 						```php
 						// Enterprise_PageCache_Model_Container_Welcome::_getCacheId()
 						return 'CONTAINER_WELCOME_' . md5($this->_placeholder->getAttribute('cache_id') . $this->_getIdentifier());
@@ -304,6 +305,15 @@
 						    . $this->_getCookieValue(Enterprise_PageCache_Model_Cookie::PERSISTENT_COOKIE_NAME, '');
 						return $cacheId;
 						```
+						</script>
+					</section>
+				</section>
+
+				<!-- 5. How Does It Get There In The First Place? -->
+				<section>
+					<section data-markdown>
+						<script type="text/template">
+							## But How Does It Get There In The First Place?
 						</script>
 					</section>
 				</section>
