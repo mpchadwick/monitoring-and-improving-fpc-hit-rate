@@ -639,6 +639,45 @@
 						</script>
 					</section>
 				</section>
+				<section>
+					<section data-markdown>
+						<script type="text/template">
+						## Where Should We Keep Track?
+						</script>
+					</section>
+					<section data-markdown>
+						<script type="text/template">
+							### What are out options?
+							<ul>
+								<li class="fragment">**File** - Useful for local profiling / review. Not intended for long term production use.</li>
+								<li class="fragment">**New Relic** - SaaS monitoring tool. Capable of storing high cardinality data. **Insights not currently hooked up to alerting suite**</li>
+								<li class="fragment">**Redis** - Temporary storage intended to be scraped and stored elsewhere in time series.</li>
+								<li class="fragment">**Other** - `Mpchadwick_PageCacheHitRate` allows you to keep track of you hit rate however you'd like. Add your own tracker by implementing `Mpchadwick_PageCacheHitRate_Model_TrackerInterface`.</li>
+							</ul>
+						</script>
+					</section>
+					<section data-markdown>
+						<script type="text/template">
+							### Open Source Time Series Databases
+							<ul>
+								<li class="fragment">**InfluxDB**
+									<ul>
+										<li class="fragment">HTTP endpoint accepts writes (and other queries)</li>
+										<li class="fragment">Measurements, tags and fields</li>
+										<li class="fragment">Need to be mindful of series cardinality</li>
+									</ul>
+								</li>
+								<li class="fragment">**Prometheus**
+									<ul>
+										<li class="fragment">Sends HTTP request to pull in metrics from "targets"</li>
+										<li class="fragment">Metrics, labels and values</li>
+										<li class="fragment">Also need to be mindful of series cardinality</li>
+									</ul>
+								</li>
+							</ul>
+						</script>
+					</section>
+				</section>
 			</div>
 		</div>
 
