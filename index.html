@@ -348,6 +348,163 @@
 							```
 						</script>
 					</section>
+					<section data-markdown>
+						<script type="text/template">
+							### How `Enterprise_PageCache` processes the `RequestResponse`...
+							```php
+							if ($this->canProcessRequest($request)) {
+							    $processor = $this->getRequestProcessor($request);
+							    if ($processor && $processor->allowCache($request)) {
+							        $this->setMetadata('cache_subprocessor', get_class($processor));
+
+							        $cacheId = $this->prepareCacheId($processor->getPageIdInApp($this));
+							        $content = $processor->prepareContent($response);
+
+							        $contentSize = strlen($content);
+							        $currentStorageSize = (int) $cacheInstance->load(self::CACHE_SIZE_KEY);
+
+							        $maxSizeInBytes = Mage::getStoreConfig(self::XML_PATH_CACHE_MAX_SIZE) * 1024 * 1024;
+
+							        if ($currentStorageSize >= $maxSizeInBytes) {
+							            Mage::app()->getCacheInstance()->invalidateType('full_page');
+							            return $this;
+							        }
+
+							        $cacheInstance->save($content, $cacheId, $this->getRequestTags());
+
+							        $cacheInstance->save(
+							            $currentStorageSize + $contentSize,
+							            self::CACHE_SIZE_KEY,
+							            $this->getRequestTags()
+							        );
+							        $this->_saveMetadata();
+							    }
+							}
+							```
+						</script>
+					</section>
+					<section data-markdown>
+						<script type="text/template">
+							### How `Enterprise_PageCache` determines if it `canProcessRequest`...
+							```php
+							// Enterprise_PageCache_Model_Processor::canProcessRequest()
+							$res = $this->isAllowed();
+							$res = $res && Mage::app()->useCache('full_page');
+							if ($request->getParam('no_cache')) {
+							    $res = false;
+							}
+
+							if ($res) {
+							    $maxDepth = Mage::getStoreConfig(self::XML_PATH_ALLOWED_DEPTH);
+							    $queryParams = $request->getQuery();
+							    unset($queryParams[Enterprise_PageCache_Model_Cache::REQUEST_MESSAGE_GET_PARAM]);
+							    $res = count($queryParams)<=$maxDepth;
+							}
+							if ($res) {
+							    $multicurrency = Mage::getStoreConfig(self::XML_PATH_CACHE_MULTICURRENCY);
+							    if (!$multicurrency && !empty($_COOKIE['currency'])) {
+							        $res = false;
+							    }
+							}
+							return $res;
+							```
+						</script>
+					</section>
+					<section data-markdown>
+						<script type="text/template">
+							### How `Enterprise_PageCache` determines if it `isAllowed`...
+							```php
+							// Enterprise_PageCache_Model_Processor::isAllowed()
+							if (!$this->_requestId) {
+							    return false;
+							}
+							if (isset($_COOKIE['NO_CACHE'])) {
+							    return false;
+							}
+							if (isset($_GET['no_cache'])) {
+							    return false;
+							}
+							if (isset($_GET[Mage_Core_Model_Session_Abstract::SESSION_ID_QUERY_PARAM])) {
+							    return false;
+							}
+							if (!Mage::app()->useCache('full_page')) {
+							    return false;
+							}
+
+							return true;
+							```
+						</script>
+					</section>
+					<section data-markdown>
+						<script type="text/template">
+							### How `Enterprise_PageCache` gets the `_requestProcessor`...
+							```php
+							// Enterprise_PageCache_Model_Processor::getRequestProcessor()
+							$configuration = Mage::getConfig()->getNode(self::XML_NODE_ALLOWED_CACHE);
+							$module = $request->getModuleName();
+							$action = $request->getActionName();
+							if (strtolower($action) == self::NOT_FOUND_ACTION && isset($configuration['_no_route'])) {
+							    $model = $configuration['_no_route'];
+							} elseif (isset($configuration[$module])) {
+							    $model = $configuration[$module];
+							    $controller = $request->getControllerName();
+							    if (is_array($configuration[$module]) && isset($configuration[$module][$controller])) {
+							        $model = $configuration[$module][$controller];
+							        if (is_array($configuration[$module][$controller])
+							                && isset($configuration[$module][$controller][$action])) {
+							            $model = $configuration[$module][$controller][$action];
+							        }
+							    }
+							}
+							if (isset($model) && is_string($model)) {
+							    $this->_requestProcessor = Mage::getModel($model);
+							}
+							```
+						</script>
+					</section>
+					<section data-markdown>
+						<script type="text/template">
+							### `_requestProcessor`s that ship with `Enterprise_PageCache`.
+							```xml
+							<!-- app/code/core/Enterprise/PageCache/etc/config.xml -->
+							<cache>
+							    <requests>
+							        <_no_route>enterprise_pagecache/processor_noroute</_no_route>
+							        <cms>enterprise_pagecache/processor_default</cms>
+							        <catalog>
+							            <category>
+							                <view>enterprise_pagecache/processor_category</view>
+							            </category>
+							        </catalog>
+							        <catalog>
+							            <product>
+							                <view>enterprise_pagecache/processor_product</view>
+							            </product>
+							        </catalog>
+							    </requests>
+							</cache>
+							```
+						</script>
+					</section>
+					<section data-markdown>
+						<script type="text/template">
+							### The `_requestProcessor` has a say (again)
+							```php
+							// Enterprise_PageCache_Model_Processor_Default::allowCache()
+							foreach ($this->_noCacheGetParams as $param) {
+							    if (!is_null($request->getParam($param, null))) {
+							        $this->_allowCache = false;
+							        return $this->_allowCache;
+							    }
+							}
+							if (Mage::getSingleton('core/session')->getNoCacheFlag()) {
+							    $this->_allowCache = false;
+							    return $this->_allowCache;
+							}
+							$this->_allowCache = true;
+							```
+						</script>
+					</section>
 				</section>
 			</div>
 		</div>
