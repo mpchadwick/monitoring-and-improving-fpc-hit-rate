@@ -316,6 +316,38 @@
 							## But How Does It Get There In The First Place?
 						</script>
 					</section>
+					<section data-markdown>
+						<script type="text/template">
+							### Before the front controller sends the response...
+							```xml
+							<!-- app/code/core/Enterprise/PageCache/etc/config.xml -->
+							<controller_front_send_response_before>
+							    <observers>
+							        <enterprise_pagecache>
+							            <class>enterprise_pagecache/observer</class>
+							            <method>cacheResponse</method>
+							        </enterprise_pagecache>
+							    </observers>
+							</controller_front_send_response_before>
+							```
+						</script>
+					</section>
+					<section data-markdown>
+						<script type="text/template">
+							### What the `Observer` does...
+							```php
+							// Enterprise_PageCache_Model_Observer::cacheResponse()
+							if (!$this->isCacheEnabled()) {
+							    return $this;
+							}
+							$frontController = $observer->getEvent()->getFront();
+							$request = $frontController->getRequest();
+							$response = $frontController->getResponse();
+							$this->_processor->processRequestResponse($request, $response);
+							return $this;
+							```
+						</script>
+					</section>
 				</section>
 			</div>
 		</div>
