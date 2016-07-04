@@ -506,6 +506,139 @@
 						</script>
 					</section>
 				</section>
+
+				<!-- 6. How Do We Track It? -->
+				<section>
+					<section data-markdown>
+						<script type="text/template">
+							## How Do We Track It?
+						</script>
+					</section>
+					<section data-markdown>
+						<script type="text/template">
+							### I built a (free) module
+							<img
+								src="images/Mpchadwick_PageCacheHitRate.png"
+								style="width: 70%; height: auto">
+						</script>
+					</section>
+					<section data-markdown>
+						<script type="text/template">
+							### Three Types of Responses...
+							<ul>
+							<li class="fragment">**Hits** - The document and all containers could be pulled from cache.</li>
+							<li class="fragment">**Partial Hits** - The document could be pulled from cache, however there were containers that needed additional processing.</li>
+							<li class="fragment">**Misses** - The document could not be pulled from cache.</li>
+							</ul>
+						</script>
+					</section>
+					<section data-markdown>
+						<script type="text/template">
+							### Tracking Hits With A `requestProcessor`
+							```php
+							// Mpchadwick_PageCacheHitRate_Model_Processor::extractContent()
+							if (!$content) {
+							    // Bail, this is a miss
+							    return $content;
+							}
+
+							// This is a hit, track it
+							```
+						</script>
+					</section>
+					<section data-markdown>
+						<script type="text/template">
+							### Tracking Partials and Misses with an `Observer`
+							```xml
+							<!-- app/code/community/Mpchadwick/PageCacheHitRate/etc/config.xml -->
+							<controller_front_send_response_before>
+							    <observers>
+							        <mpchadwick_pagecachehitrate>
+							            <class>Mpchadwick_PageCacheHitRate_Model_Observer</class>
+							            <method>handleControllerFrontSendResponseBefore</method>
+							        </mpchadwick_pagecachehitrate>
+							    </observers>
+							</controller_front_send_response_before>
+							```
+						</script>
+					</section>
+					<section data-markdown>
+						<script type="text/template">
+							### Executing the track
+							```php
+							// Mpchadwick_PageCacheHitRate_Model_Observer::handleControllerFrontSendResponseBefore()
+							$paramProvider = Mage::getModel('mpchadwick_pagecachehitrate/tracker_paramProvider');
+							$type = $this->type();
+							$params = $paramProvider->baseParams(true) + array(
+							    'type' => $type,
+							    'route' => $this->trackerRoute(),
+							);
+
+							$factory = Mage::getModel('mpchadwick_pagecachehitrate/trackerFactory');
+							foreach ($trackers->asArray() as $alias => $data) {
+							    $tracker = $factory->build($data['class']);
+							    $tracker->track('RequestResponse', $params, $alias);
+
+							    // Track any container misses for a partial cache response
+							    $trackContainerMisses = (string)$config->get('track_container_misses');
+							    if ($type === 'partial' && $trackContainerMisses) {
+							        unset($params['type']);
+							        $tracker->trackContainerMisses($params);
+							    }
+							}
+							```
+						</script>
+					</section>
+					<section data-markdown>
+						<script type="text/template">
+							### Partial Hit or Miss?
+							```php
+							// Mpchadwick_PageCacheHitRate_Model_Observer::type()
+							$request = Mage::app()->getRequest();
+
+							if ($request->getModuleName() === 'pagecache' &&
+							    $request->getControllerName() === 'request' &&
+							    $request->getActionName() === 'process'
+							) {
+							    return 'partial';
+							} else {
+							    return 'miss';
+							}
+							```
+						</script>
+					</section>
+					<section data-markdown>
+						<script type="text/template">
+							### Tracking Container Misses
+							```php
+							// Mpchadwick_PageCacheHitRate_Model_Tracker_Abstract::trackContainerMisses()
+							$containers = Mage::registry('cached_page_containers');
+
+							foreach ($containers as $container) {
+							    $this->track('ContainerMiss', $params + array(
+							        'container' => get_class($container),
+							    ));
+							}
+							```
+						</script>
+					</section>
+					<section data-markdown>
+						<script type="text/template">
+							### Dimensions to Track
+							```php
+							Mpchadwick_PageCacheHitRate_Model_Tracker_ParamProvider::baseParams()
+							return array(
+							    'url' => $this->getUrl($originalRequest),
+							    'ip' => Mage::app()->getRequest()->getClientIp(),
+							    'hostname' => gethostname(),
+							    'customerGroup' => $this->getCustomerGroup(),
+							    'userAgent' => $this->userAgent,
+							    'isBot' => $this->isBot,
+							);
+							```
+						</script>
+					</section>
+				</section>
 			</div>
 		</div>
 
