@@ -507,7 +507,21 @@
 					</section>
 				</section>
 
-				<!-- 6. How Do We Track It? -->
+				<!-- 6. Why Should We Track? -->
+				<section>
+					<section data-markdown>
+						<script type="text/template">
+							## Why Should We Track?
+							<ul>
+								<li class="fragment">Diagnose production issues</li>
+								<li class="fragment">Understand if a deployment adversely affects hit rate</li>
+								<li class="fragment">Review the data, optimize, rinse and repeat</li>
+							</ul>
+						</script>
+					</section>
+				</section>
+
+				<!-- 7. How Do We Track It? -->
 				<section>
 					<section data-markdown>
 						<script type="text/template">
@@ -639,21 +653,18 @@
 						</script>
 					</section>
 				</section>
+				
+				<!-- 8. Where Should We Track It? -->
 				<section>
 					<section data-markdown>
 						<script type="text/template">
 						## Where Should We Keep Track?
-						</script>
-					</section>
-					<section data-markdown>
-						<script type="text/template">
-							### What are out options?
-							<ul>
-								<li class="fragment">**File** - Useful for local profiling / review. Not intended for long term production use.</li>
-								<li class="fragment">**New Relic** - SaaS monitoring tool. Capable of storing high cardinality data. **Insights not currently hooked up to alerting suite**</li>
-								<li class="fragment">**Redis** - Temporary storage intended to be scraped and stored elsewhere in time series.</li>
-								<li class="fragment">**Other** - `Mpchadwick_PageCacheHitRate` allows you to keep track of you hit rate however you'd like. Add your own tracker by implementing `Mpchadwick_PageCacheHitRate_Model_TrackerInterface`.</li>
-							</ul>
+						<ul>
+							<li class="fragment">**File** - Useful for local profiling / review. Not intended for long term production use.</li>
+							<li class="fragment">**New Relic** - SaaS monitoring tool. Capable of storing high cardinality data. **Insights not currently hooked up to alerting suite**</li>
+							<li class="fragment">**Redis** - Temporary storage intended to be scraped and stored elsewhere in time series.</li>
+							<li class="fragment">**Other** - `Mpchadwick_PageCacheHitRate` allows you to keep track of you hit rate however you'd like. Add your own tracker by implementing `Mpchadwick_PageCacheHitRate_Model_TrackerInterface`.</li>
+						</ul>
 						</script>
 					</section>
 					<section data-markdown>
