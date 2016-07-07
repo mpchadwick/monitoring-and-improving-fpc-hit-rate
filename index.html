@@ -689,6 +689,125 @@
 						</script>
 					</section>
 				</section>
+
+                <!-- 9. How Can We Improve our Hit Rate? -->
+                <section>
+                    <section data-markdown>
+                        <script type="text/template">
+                            ## How Can We Improve Our Hit Rate?
+                        </script>
+                    </section>
+                    <section data-markdown>
+                        <script type="text/template">
+                            ### Have you ever seen a URL that looks like this?
+                            <h5 class="fragment">http://www.example.com?gclid=uniqueidentifier</h5>
+                        </script>
+                    </section>
+                    <section data-markdown>
+                        <script type="text/template">
+                            ### How about this?
+                             <h5 class="fragment">http://www.example.com?utm_medium=email&utm_campgain=my-camapaign&utm_content=link-1</h5>
+                        </script>
+                    </section>
+                    <section data-markdown>
+                        <script type="text/template">
+                            ### Recall this...
+                            ```php
+                            // Enterprise_PageCache_Model_Processor_Default::getPageIdWithoutApp()
+                            $queryParams = $_GET;
+                            ksort($queryParams);
+                            $queryParamsHash = md5(serialize($queryParams));
+                            return $processor->getRequestId() . '_' . $queryParamsHash;
+                            ```
+                        </script>
+                    </section>
+                    <section data-markdown>
+                        <script type="text/template">
+                            ### Also, recall this...
+                            ```php
+                            // Enterprise_PageCache_Model_Processor_Default::canProcessRequest()
+                            $maxDepth = Mage::getStoreConfig(self::XML_PATH_ALLOWED_DEPTH);
+                            $queryParams = $request->getQuery();
+                            unset($queryParams[Enterprise_PageCache_Model_Cache::REQUEST_MESSAGE_GET_PARAM]);
+                            $res = count($queryParams)<=$maxDepth;
+                            ```
+                        </script>
+                    </section>
+                    <section data-markdown>
+                        <script type="text/template">
+                            ### Something I didn't show you...
+                            ```xml
+                            <!-- app/code/core/Enterprise/PageCache/etc/config.xml -->
+                            <default>
+                                <system>
+                                    <page_cache>
+                                        <allowed_depth>1</allowed_depth>
+                                        <multicurrency>1</multicurrency>
+                                        <max_cache_size>1024</max_cache_size>
+                                    </page_cache>
+                                </system>
+                            </default>
+                            ```
+                        </script>
+                    </section>
+                    <section data-markdown>
+                        <script type="text/template">
+                            ### 2 **Easy** Tricks
+                            <ul>
+                                <li class="fragment">Strip parameters that aren't needed on the server.</li>
+                                <li class="fragment">Increase Max Depth.</li>
+                            </ul>
+                        </script>
+                    </section>
+                    <section data-markdown>
+                        <script type="text/template">
+                            ### Another Free Module
+                            *Add screenshot of SD Page Cache Params()*
+                        </script>
+                    </section>
+                    <section data-markdown>
+                        <script type="text/template">
+                            ### A Script to help you identify which params to strip
+                            *Screenshot of gist*
+                        </script>
+                    </section>
+                    <section data-markdown>
+						<script type="text/template">
+						### Personalization vs performance
+						```php
+						// Enterprise_PageCache_Model_Processor::_createRequestIds()
+						if (isset($_COOKIE[Enterprise_PageCache_Model_Cookie::COOKIE_CUSTOMER_GROUP])) {
+						    $uri .= '_' . $_COOKIE[Enterprise_PageCache_Model_Cookie::COOKIE_CUSTOMER_GROUP];
+						}
+						if (isset($_COOKIE[Enterprise_PageCache_Model_Cookie::COOKIE_CUSTOMER_LOGGED_IN])) {
+						    $uri .= '_' . $_COOKIE[Enterprise_PageCache_Model_Cookie::COOKIE_CUSTOMER_LOGGED_IN];
+						}
+						if (isset($_COOKIE[Enterprise_PageCache_Model_Cookie::CUSTOMER_SEGMENT_IDS])) {
+						    $uri .= '_' . $_COOKIE[Enterprise_PageCache_Model_Cookie::CUSTOMER_SEGMENT_IDS];
+						}
+						```
+						</script>
+					</section>
+					<section data-markdown>
+						<script type="text/template">
+						### Other compromises
+						<ul>
+							<li class="fragment">Size of catalog</li>
+							<li class="fragment">Number of categories</li>
+							<li class="fragment">Number of attributes / attribute values</li>
+						</ul>
+						</script>
+					</section>
+					<section data-markdown>
+						<script type="text/template">
+						### Uncached Routes
+						<ul>
+							<li class="fragment">Search results page</li>
+							<li class="fragment">Some random SEO plugin?</li>
+						</ul>
+						</script>
+					</section>
+                </section>
 			</div>
 		</div>
 
