@@ -762,13 +762,17 @@
                     <section data-markdown>
                         <script type="text/template">
                             ### Another Free Module
-                            *Add screenshot of SD Page Cache Params()*
+                            <img
+								src="images/SomethingDigital_PageCacheParams.png"
+								style="width: 70%; height: auto">
                         </script>
                     </section>
                     <section data-markdown>
                         <script type="text/template">
                             ### A Script to help you identify which params to strip
-                            *Screenshot of gist*
+                            <img
+								src="images/query-string-usage.png"
+								style="width: 70%; height: auto">
                         </script>
                     </section>
                     <section data-markdown>
@@ -807,6 +811,66 @@
 						</ul>
 						</script>
 					</section>
+					<section data-markdown>
+						<script type="text/template">
+						### No cache containers preventing full hits from happening, period.
+						```xml
+						<!-- app/code/community/My/Module/etc/cache.xml-->
+						<?xml version="1.0"?>
+						<config>
+						    <placeholders>
+						        <my_placeholder>
+						            <block>my_module/my_block</block>
+						            <name>my.module</name>
+						            <template>my/module/template.phtml</template>
+						            <placeholder>MY_MODULE</placeholder>
+						            <container>My_Module_Model_Container_Mine</container>
+						            <cache_lifetime>false</cache_lifetime>
+						        </my_placeholder>
+						    </placeholders>
+						</config>
+
+						<!-- app/design/frontend/base/default/layout/my/module/layout.xml -->
+						<?xml version="1.0"?>
+						<layout version="0.1.0">
+						    <default>
+						        <reference name="before_body_end">
+						            <block type="my_module/my_block" name="my.block" as="my_block">
+						                <action method="setTemplate">
+						                    <template>my/module/template.phtml</template>
+						                </action>
+						            </block>
+						        </reference>
+						    </default>
+						</layout>
+						```
+						> More common than you might think.
+						</script>
+					</section>
+					<section data-markdown>
+                        <script type="text/template">
+                            ### One More Free Module!
+                            <img
+								src="images/SomethingDigital_PageCacheUtils.png"
+								style="width: 70%; height: auto">
+                        </script>
+                    </section>
+                    <section data-markdown>
+                        <script type="text/template">
+                            ### Recap
+                            <ul>
+	                            <li class="fragment">Strip unnecessary query params on the server</li>
+	                            <li class="fragment">Increase max depth setting</li>
+	                            <li class="fragment">Replace / customize non-FPC compatible 3rd party modules</li>
+	                            <li class="fragment">Cache **all** containers</li>
+	                            <li class="fragment">Compromise with marketing team</li>
+	                            <li class="fragment">Compromise with merchandising team</li>
+	                            <li class="fragment">Limit admin activity</li>
+	                            <li class="fragment">Explore expiring stale entries</li>
+	                            <li class="fragment">Tune your FPC backend</li>
+	                        </ul>
+                        </script>
+                    </section>
                 </section>
 			</div>
 		</div>
