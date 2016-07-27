@@ -51,7 +51,7 @@
 				<section>
 					<section data-markdown>
 						<script type="text/template">
-						## Why Does It Matter?
+						## Why Does Page Cache Matter?
 						</script>
 					</section>
 					<section data-markdown>
@@ -70,10 +70,10 @@
 					</section>
 					<section data-markdown>
 						<script type="text/template">
-							### How it makes a difference
+							### It matters because...
 							<ul>
-								<li class="fragment">Speedier application during normal operation</li>
-								<li class="fragment">Critical for ensuring availability during surge</li>
+								<li class="fragment">Speedier application improves user experience during normal operation</li>
+								<li class="fragment">Critical for ensuring availability during a traffic surge</li>
 							</ul>
 						</script>
 					</section>
@@ -89,7 +89,7 @@
 						<script type="text/template">
 						### The moment of truth...
 						```php
-						// Mage_Core_Mode_App::run()
+						// Mage_Core_Model_App::run()
 						if ($this->_cache->processRequest()) {
 						    $this->getResponse()->sendResponse();
 						} else {
@@ -867,9 +867,23 @@
                     <section data-markdown>
                         <script type="text/template">
                             ### Impact of admin activity...
-                            <img
-								src="images/SomethingDigital_PageCacheUtils.png"
-								style="width: 70%; height: auto">
+                            <ul>
+							<li class="fragment">Bulk catalog updates</li>
+							<li class="fragment">Trigger happy admins</li>
+						</ul>
+                        </script>
+                    </section>
+                    <section data-markdown>
+                        <script type="text/template">
+                            ### Cache Backend Tuning
+                            <ul>
+                            <li class="fragment">Set up a separate Redis instance</li>
+							<li class="fragment">Set `maxmemory` appropriately</li>
+							<li class="fragment">Understand `maxmemory-policy`</li>
+							<li class="fragment">Understand `maxmemory-samples`</li>
+							<li class="fragment">Understand that FPC doesn't expire</li>
+							<li class="fragment">Upgrade Redis!</li>
+							</ul>
                         </script>
                     </section>
                     <section data-markdown>
@@ -883,12 +897,20 @@
 	                            <li class="fragment">Compromise with marketing team</li>
 	                            <li class="fragment">Compromise with merchandising team</li>
 	                            <li class="fragment">Limit admin activity</li>
-	                            <li class="fragment">Explore expiring stale entries</li>
 	                            <li class="fragment">Tune your FPC backend</li>
 	                        </ul>
                         </script>
                     </section>
                 </section>
+
+                 <!-- 9. How Can We Improve our Hit Rate? -->
+                <section>
+                    <section data-markdown>
+                        <script type="text/template">
+                            ## Questions?
+                        </script>
+                    </section>
+                 </section>
 			</div>
 		</div>
 
