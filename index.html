@@ -30,24 +30,36 @@
 						## Monitoring (and improving) your Full Page Cache hit rate
 						#### with `Enterprise_PageCache`
 					</script>
+					<aside class="notes">
+				        The topic of today's talk is Monitoring (and improving) your Full Page Cache hit rate. The talk focuses heavily caching via Magento 1.X Enterprise Edition's Enterprise_PageCache module, but many of the concepts are applicable with other caching backend or even other uses cases besides page cache.
+				    </aside>
 				</section>
 				<!-- 2. Who am I? -->
 				<section data-markdown>
 					<script type="text/template">
 						## Who am I?
 						<ul>
-						<li class="fragment">Magento Developer with Something Digital (Magento Gold Solution Partner)</li>
-						<li class="fragment">Oversee operations and site performance on Rite Aid, fortune 500 company and winner of Imagine 2016 growth award</li>
+						<li class="fragment">Magento Developer at Something Digital (Magento Gold Solution Partner)</li>
+						<li class="fragment">Oversee operations and site performance for Rite Aid, fortune 500 company and winner of Imagine 2016 growth award</li>
 						<li class="fragment">Passionate about monitoring tools and performance optimization</li>
 						<ul>
-							<li class="fragment">Contributor to Prometheus time series database project</li>
+							<li class="fragment">Built [Mpchadwick_PageCacheHitRate](https://github.com/mpchadwick/Mpchadwick_PageCacheHitRate)</li>
 							<li class="fragment">Researched and published work around optimizing `/catalogsearch/result/index`</li>
 							<li class="fragment">Built Domain Clamp - SaaS tool for monitoring / notifications of Domain and SSL certificates</li>
 						</ul>
 						</ul>
 					</script>
 				</section>
-				<!-- 3. Why Does It Matter? -->
+				<!-- 3. What is "Full Page Cache"? -->
+				<section data-markdown>
+					<script type="text/template">
+						## What is Full Page Cache?
+						<ul>
+						<li class="fragment">Saving the generated HTML for a given URL to be served statically on subsequent requests</li>
+						</ul>
+					</script>
+				</section>
+				<!-- 4. Why Does It Matter? -->
 				<section>
 					<section data-markdown>
 						<script type="text/template">
@@ -66,6 +78,13 @@
 								<li>CentOS VM with 2GB RAM</li>
 								<li>Men's shirt's category page</li>
 							</ul>
+						</script>
+					</section>
+					<section data-markdown>
+						<script type="text/template">
+							### Benchmarks
+							<p>"It typically speeds up delivery with a factor of 300 - 1000x, depending on your architecture." - https://varnish-cache.org/intro/</p>
+						</script
 						</script>
 					</section>
 					<section data-markdown>
@@ -237,82 +256,6 @@
 						    Mage::app()->getRequest()->setRoutingInfo($routingInfo);
 						    return false;
 						}
-						```
-						</script>
-					</section>
-					<section data-markdown>
-						<script type="text/template">
-						### What `_processContainers()` does...
-						```php
-						// Enterprise_PageCache_Model_Processor_Default::_processContainers()
-						$placeholders = array();
-						preg_match_all(
-						    Enterprise_PageCache_Model_Container_Placeholder::HTML_NAME_PATTERN,
-						    $content, $placeholders, PREG_PATTERN_ORDER
-						);
-
-						$placeholders = array_unique($placeholders[1]);
-						foreach ($placeholders as $definition) {
-						    $placeholder = new Enterprise_PageCache_Model_Container_Placeholder($definition);
-						    $container = $placeholder->getContainerClass();
-						    if (!$container) {
-						        continue;
-						    }
-
-						    $container = new $container($placeholder);
-						    $container->setProcessor($this);
-
-						    if (!$container->applyWithoutApp($content)) {
-						        $containers[] = $container;
-						    } else {
-						        preg_match($placeholder->getPattern(), $content, $matches);
-						        if (array_key_exists(1,$matches)) {
-						            $containers = array_merge($this->_processContainers($matches[1]), $containers);
-						            $content = preg_replace($placeholder->getPattern(), str_replace('$', '\\$', $matches[1]), $content);
-						        }
-						    }
-						}
-						return $containers;
-						```
-						</script>
-					</section>
-					<section data-markdown>
-						<script type="text/template">
-						### How containers try to `applyWithoutApp()`
-						```php
-						// Enterprise_PageCache_Model_Container_Abstract::applyWithoutApp()
-						$cacheId = $this->_getCacheId();
-
-						if ($cacheId === false) {
-						    $this->_applyToContent($content, '');
-						    return true;
-						}
-
-						$block = $this->_loadCache($cacheId);
-						if ($block === false) {
-						    return false;
-						}
-
-						$block = Enterprise_PageCache_Helper_Url::replaceUenc($block);
-						$this->_applyToContent($content, $block);
-						return true;
-						```
-						</script>
-					</section>
-					<section data-markdown>
-						<script type="text/template">
-						### How containers generate the `cacheId`
-						```php
-						// Enterprise_PageCache_Model_Container_Welcome::_getCacheId()
-						return 'CONTAINER_WELCOME_' . md5($this->_placeholder->getAttribute('cache_id') . $this->_getIdentifier());
-
-						// Enterprise_PageCache_Model_Container_Welcome::_getIdentifier()
-						$cacheId = $this->_getCookieValue(Enterprise_PageCache_Model_Cookie::COOKIE_CUSTOMER, '')
-						    . '_'
-						    . $this->_getCookieValue(Enterprise_PageCache_Model_Cookie::COOKIE_CUSTOMER_LOGGED_IN, '')
-						    . '_'
-						    . $this->_getCookieValue(Enterprise_PageCache_Model_Cookie::PERSISTENT_COOKIE_NAME, '');
-						return $cacheId;
 						```
 						</script>
 					</section>
@@ -903,7 +846,7 @@
                     </section>
                 </section>
 
-                 <!-- 9. How Can We Improve our Hit Rate? -->
+                 <!-- 10. Questions? -->
                 <section>
                     <section data-markdown>
                         <script type="text/template">
