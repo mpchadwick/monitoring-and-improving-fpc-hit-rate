@@ -7,10 +7,10 @@
 		<title>FPC Hit Rate</title>
 
 		<link rel="stylesheet" href="css/reveal.css">
-		<link rel="stylesheet" href="css/theme/simple.css">
+		<link rel="stylesheet" href="css/theme/custom.css">
 
 		<!-- Theme used for syntax highlighting of code -->
-		<link rel="stylesheet" href="lib/css/zenburn.css">
+		<link rel="stylesheet" href="lib/css/solarized-dark.css">
 
 		<!-- Printing and PDF exports -->
 		<script>
@@ -25,10 +25,12 @@
 		<div class="reveal">
 			<div class="slides">
 				<!-- 1. Cover -->
-				<section data-markdown>
+				<section data-markdown data-background="images/2008-07-16_IMGP7587.jpg" style="color: white;">
 					<script type="text/template">
-						## Monitoring (and improving) your Full Page Cache hit rate
-						#### with `Enterprise_PageCache`
+						<div class="cover-content">
+						<h2>Monitoring (and improving) your Full Page Cache hit rate</h2>
+						<h4>with `Enterprise_PageCache`</h4>
+						</div>
 					</script>
 					<aside class="notes">
 				        The topic of today's talk is Monitoring (and improving) your Full Page Cache hit rate. The talk focuses heavily caching via Magento 1.X Enterprise Edition's Enterprise_PageCache module, but many of the concepts are applicable with other caching backend or even other uses cases besides page cache.
@@ -42,11 +44,6 @@
 						<li class="fragment">Magento Developer at Something Digital (Magento Gold Solution Partner)</li>
 						<li class="fragment">Oversee operations and site performance for Rite Aid, fortune 500 company and winner of Imagine 2016 growth award</li>
 						<li class="fragment">Passionate about monitoring tools and performance optimization</li>
-						<ul>
-							<li class="fragment">Built [Mpchadwick_PageCacheHitRate](https://github.com/mpchadwick/Mpchadwick_PageCacheHitRate)</li>
-							<li class="fragment">Researched and published work around optimizing `/catalogsearch/result/index`</li>
-							<li class="fragment">Built Domain Clamp - SaaS tool for monitoring / notifications of Domain and SSL certificates</li>
-						</ul>
 						</ul>
 					</script>
 				</section>
