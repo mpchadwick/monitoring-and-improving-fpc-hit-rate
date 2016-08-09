@@ -28,7 +28,7 @@
 				<section data-markdown data-background="images/2008-07-16_IMGP7587.jpg" style="color: white;">
 					<script type="text/template">
 						<div class="cover-content">
-						<h2>Monitoring (and improving) your Full Page Cache hit rate</h2>
+						<h2>Monitoring (and Improving) your Full Page Cache Hit Rate</h2>
 						<h4>with `Enterprise_PageCache`</h4>
 						</div>
 					</script>
@@ -42,8 +42,37 @@
 						## Who am I?
 						<ul>
 						<li class="fragment">Magento Developer at Something Digital (Magento Gold Solution Partner)</li>
-						<li class="fragment">Oversee operations and site performance for Rite Aid, fortune 500 company and winner of Imagine 2016 growth award</li>
+						<li class="fragment">Oversee operations and site performance for Rite Aid, Fortune 500 company and winner of Imagine 2016 growth award</li>
 						<li class="fragment">Passionate about monitoring tools and performance optimization</li>
+						</ul>
+					</script>
+				</section>
+				<!-- 3. What will we be talking about -->
+				<section data-markdown>
+					<script type="text/template">
+						## What will we be talking about?
+						<ul>
+						<li class="fragment">Background
+							<ul>
+								<li class="fragment">What is "Full Page Cache"?</li>
+								<li class="fragment">Why does it matter?</li>
+								<li class="fragment">Why should we track it?</li>
+							</ul>
+						</li>
+						<li class="fragment">`Enterprise_PageCache` Internals
+							<ul>
+								<li class="fragment">How do we hit it?</li>
+								<li class="fragment">How does it get there in the first place?</li>
+							</ul>
+						</li>
+						<li class="fragment">Monitoring Hit Rate
+							<ul>
+								<li class="fragment">How do we track it?</li>
+								<li class="fragment">Where should we track it?</li>
+							</ul>
+						</li>
+						<li class="fragment">Improving Hit Rate</li>
+						<li class="fragment">Questions</li>
 						</ul>
 					</script>
 				</section>
@@ -94,8 +123,64 @@
 						</script>
 					</section>
 				</section>
-				<!-- 4. How Do We Hit It? -->
+				<!-- 5. Why Should We Track? -->
 				<section>
+					<section data-markdown>
+						<script type="text/template">
+							## Why Should We Track?
+						</script>
+					</section>
+					<section data-markdown>
+						<script type="text/template">
+							"If it moves, graph it" - Etsy
+						</script>
+					</section>
+					<section data-markdown>
+						<script type="text/template">
+							### We should track it to...
+							<ul>
+								<li class="fragment">Diagnose production issues</li>
+								<li class="fragment">Understand if a deployment adversely affects hit rate</li>
+								<li class="fragment">Review the data, optimize, rinse and repeat</li>
+							</ul>
+						</script>
+					</section>
+				</section>
+				<!-- 6. How Do We Hit It? -->
+				<section>
+					<section data-markdown>
+						<script type="text/template">
+							## Agenda
+							<ul class="toc">
+							<li>Background
+								<ul>
+									<li>What is "Full Page Cache"?</li>
+									<li>Why does it matter?</li>
+									<li>Why should we track it?</li>
+								</ul>
+							</li>
+							<li><span class="active">`Enterprise_PageCache` Internals</span>
+								<ul>
+									<li>How do we hit it?</li>
+									<li>How does it get there in the first place?</li>
+								</ul>
+							</li>
+							<li>Monitoring Hit Rate
+								<ul>
+									<li>How do we track it?</li>
+									<li>Where should we track it?</li>
+								</ul>
+							</li>
+							<li>Improving Hit Rate</li>
+							<li>Questions</li>
+							</ul>
+						</script>
+					</section>
+					<section data-markdown>
+						<script type="text/template">
+							If you want to know how to monitor and improve your Full Page Cache hit rate, you first need to understand how Full Page Cache works.
+						</script>
+					</section>
 					<section data-markdown>
 						<script type="text/template">
 						## How Do We Hit It?
@@ -257,8 +342,7 @@
 						</script>
 					</section>
 				</section>
-
-				<!-- 5. How Does It Get There In The First Place? -->
+				<!-- 7. How Does It Get There In The First Place? -->
 				<section>
 					<section data-markdown>
 						<script type="text/template">
@@ -455,23 +539,36 @@
 						</script>
 					</section>
 				</section>
-
-				<!-- 6. Why Should We Track? -->
+				<!-- 8. How Do We Track It? -->
 				<section>
 					<section data-markdown>
 						<script type="text/template">
-							## Why Should We Track?
-							<ul>
-								<li class="fragment">Diagnose production issues</li>
-								<li class="fragment">Understand if a deployment adversely affects hit rate</li>
-								<li class="fragment">Review the data, optimize, rinse and repeat</li>
+							## Agenda
+							<ul class="toc">
+							<li>Background
+								<ul>
+									<li>What is "Full Page Cache"?</li>
+									<li>Why does it matter?</li>
+									<li>Why should we track it?</li>
+								</ul>
+							</li>
+							<li>`Enterprise_PageCache` Internals
+								<ul>
+									<li>How do we hit it?</li>
+									<li>How does it get there in the first place?</li>
+								</ul>
+							</li>
+							<li><span class="active">Monitoring Hit Rate</span>
+								<ul>
+									<li>How do we track it?</li>
+									<li>Where should we track it?</li>
+								</ul>
+							</li>
+							<li>Improving Hit Rate</li>
+							<li>Questions</li>
 							</ul>
 						</script>
 					</section>
-				</section>
-
-				<!-- 7. How Do We Track It? -->
-				<section>
 					<section data-markdown>
 						<script type="text/template">
 							## How Do We Track It?
@@ -602,8 +699,7 @@
 						</script>
 					</section>
 				</section>
-				
-				<!-- 8. Where Should We Track It? -->
+				<!-- 9. Where Should We Track It? -->
 				<section>
 					<section data-markdown>
 						<script type="text/template">
@@ -620,17 +716,33 @@
 						<script type="text/template">
 							### Open Source Time Series Databases
 							<ul>
-								<li class="fragment">**InfluxDB**
+								<li>**InfluxDB**
 									<ul>
 										<li class="fragment">HTTP endpoint accepts writes (and other queries)</li>
 										<li class="fragment">Measurements, tags and fields</li>
+										<li class="fragment">Visualization via Grafana or Cronograf</li>
+										<li class="fragment">Alerting via Kapacitor</li>
+										<li class="fragment">Retention Policies</li>
+										<li class="fragment">Continuous Queries</li>
+										<li class="fragment">Open source Magento 1 Connector</li>
+										<li class="fragment">Written in Go</li>
 										<li class="fragment">Need to be mindful of series cardinality</li>
 									</ul>
 								</li>
-								<li class="fragment">**Prometheus**
+							</ul>
+						</script>
+					</section>
+					<section data-markdown>
+						<script type="text/template">
+							### Open Source Time Series Databases
+							<ul>
+								<li>**Prometheus**
 									<ul>
 										<li class="fragment">Sends HTTP request to pull in metrics from "targets"</li>
 										<li class="fragment">Metrics, labels and values</li>
+										<li class="fragment">Visualization via Grafana or PromDash</li>
+										<li class="fragment">Alerting via AlertManager</li>
+										<li class="fragment">Also written in Go</li>
 										<li class="fragment">Also need to be mindful of series cardinality</li>
 									</ul>
 								</li>
@@ -638,9 +750,41 @@
 						</script>
 					</section>
 				</section>
-
-                <!-- 9. How Can We Improve our Hit Rate? -->
+                <!-- 10. How Can We Improve our Hit Rate? -->
                 <section>
+                    <section data-markdown>
+						<script type="text/template">
+							## Agenda
+							<ul class="toc">
+							<li>Background
+								<ul>
+									<li>What is "Full Page Cache"?</li>
+									<li>Why does it matter?</li>
+									<li>Why should we track it?</li>
+								</ul>
+							</li>
+							<li>`Enterprise_PageCache` Internals
+								<ul>
+									<li>How do we hit it?</li>
+									<li>How does it get there in the first place?</li>
+								</ul>
+							</li>
+							<li>Monitoring Hit Rate
+								<ul>
+									<li>How do we track it?</li>
+									<li>Where should we track it?</li>
+								</ul>
+							</li>
+							<li class="active">Improving Hit Rate</li>
+							<li>Questions</li>
+							</ul>
+						</script>
+					</section>
+					<section data-markdown>
+						<script type="text/template">
+							Once you have monitoring in place, the next thing to do is make efforts to improve your hit rate.
+						</script>
+					</section>
                     <section data-markdown>
                         <script type="text/template">
                             ## How Can We Improve Our Hit Rate?
@@ -828,6 +972,23 @@
                     </section>
                     <section data-markdown>
                         <script type="text/template">
+                            ### Max. Cache Size
+                            ```xml
+                            <!-- app/code/core/Enterprise/PageCache/etc/config.xml -->
+                            <default>
+                                <system>
+                                    <page_cache>
+                                        <allowed_depth>1</allowed_depth>
+                                        <multicurrency>1</multicurrency>
+                                        <max_cache_size>1024</max_cache_size>
+                                    </page_cache>
+                                </system>
+                            </default>
+                            ```
+                        </script>
+                    </section>
+                    <section data-markdown>
+                        <script type="text/template">
                             ### Cache Warming
                         </script>
                     </section>
@@ -843,13 +1004,13 @@
 	                            <li class="fragment">Compromise with merchandising team</li>
 	                            <li class="fragment">Limit admin activity</li>
 	                            <li class="fragment">Tune your FPC backend</li>
+	                            <li class="fragment">Tune the Max. Cache Size setting</li>
 	                            <li class="fragment">Consider if warming the cache would help</li>
 	                        </ul>
                         </script>
                     </section>
                 </section>
-
-                 <!-- 10. Questions? -->
+                 <!-- 11. Questions? -->
                 <section>
                     <section data-markdown>
                         <script type="text/template">

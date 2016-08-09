@@ -21,9 +21,9 @@
 // Override theme settings (see ../template/settings.scss)
 $mainFont: 'Scope One', serif;
 $mainColor: white;
-$headingFont: 'Special Elite', cursive;
+$headingFont: 'Special Elite', Impact;
 $headingColor: white;
-$headingTextShadow: none;
+$headingTextShadow: 2px 2px black;
 $headingTextTransform: none;
 $backgroundColor: #444444;
 $linkColor: chocolate;
@@ -36,8 +36,7 @@ $selectionBackgroundColor: rgba(0, 0, 0, 0.99);
 @import "../template/theme";
 // ---------------------------------------------
 
-.cover-content {
-    h2, h4 {
-        text-shadow: 2px 2px black;
-    }
+.toc .active {
+    font-weight: bold;
+    color: moccasin;
 }
