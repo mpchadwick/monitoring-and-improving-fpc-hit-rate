@@ -97,7 +97,7 @@
 							### Benchmarks
 							<img
 								src="images/benchmarks.png"
-								style="width: 60%; height: auto">
+								style="width: 50%; height: auto">
 							<ul>
 								<li>Magento 1.14.1.0</li>
 								<li>Sample data</li>
@@ -178,12 +178,21 @@
 					</section>
 					<section data-markdown>
 						<script type="text/template">
-							If you want to know how to monitor and improve your Full Page Cache hit rate, you first need to understand how Full Page Cache works.
+							If you want to know how to monitor and improve Full Page Cache hit rate, you first need to understand how Full Page Cache works.
 						</script>
 					</section>
 					<section data-markdown>
 						<script type="text/template">
 						## How Do We Hit It?
+						</script>
+					</section>
+					<section data-markdown>
+						<script type="text/template">
+						## Request Flow
+						<img
+								class="plain"
+								src="images/hitting-page-cache.svg"
+								style="height: auto">
 						</script>
 					</section>
 					<section data-markdown>
@@ -207,11 +216,15 @@
 						}
 						return $this;
 						```
+						<img
+								class="plain"
+								src="images/hitting-page-cache-1.svg"
+								style="height: auto">
 						</script>
 					</section>
 					<section data-markdown>
 						<script type="text/template">
-						### How `Mage_Core_Model_Cache` tries to `processRequest()`
+						### Processing the request
 						```php
 						// Mage_Core_Model_Cache::processRequest()
 						$content = false;
@@ -228,11 +241,15 @@
 						}
 						return false;
 						```
+						<img
+								class="plain"
+								src="images/hitting-page-cache-2.svg"
+								style="height: auto">
 						</script>
 					</section>
 					<section data-markdown>
 						<script type="text/template">
-						### How `Enterprise_PageCache` tries to `extractContent()`...
+						### Extracting Content
 						```php
 						// Enterprise_PageCache_Model_Processor::extractContent()
 						$subprocessorClass = $this->getMetadata('cache_subprocessor');
@@ -251,11 +268,15 @@
 
 						return $content;
 						```
+						<img
+								class="plain"
+								src="images/hitting-page-cache-3.svg"
+								style="height: auto">
 						</script>
 					</section>
 					<section data-markdown>
 						<script type="text/template">
-						### How `Enterprise_PageCache` prepares the `requestCacheId`
+						### The `requestCacheId`
 						```php
 						// Enterprise_PageCache_Model_Processor::_createRequestIds()
 						$uri = $this->_getFullPageUrl();
@@ -294,6 +315,10 @@
 						$this->_requestId = $uri;
 						$this->_requestCacheId = $this->prepareCacheId($this->_requestId);
 						```
+						<img
+								class="plain"
+								src="images/hitting-page-cache-4.svg"
+								style="height: auto">
 						</script>
 					</section>
 					<section data-markdown>
@@ -306,11 +331,15 @@
 						$queryParamsHash = md5(serialize($queryParams));
 						return $processor->getRequestId() . '_' . $queryParamsHash;
 						```
+						<img
+								class="plain"
+								src="images/hitting-page-cache-5.svg"
+								style="height: auto">
 						</script>
 					</section>
 					<section data-markdown>
 						<script type="text/template">
-						### The second moment of truth...(full hit or partial hit)
+						### The second moment of truth...
 						```php
 						// Enterprise_PageCache_Model_Processor_Default::_processContent()
 						$containers = $this->_processContainers($content);
@@ -339,6 +368,10 @@
 						    return false;
 						}
 						```
+						<img
+								class="plain"
+								src="images/hitting-page-cache-6.svg"
+								style="height: auto">
 						</script>
 					</section>
 				</section>

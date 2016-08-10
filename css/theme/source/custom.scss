@@ -44,3 +44,11 @@ $selectionBackgroundColor: rgba(0, 0, 0, 0.99);
 .smaller a {
     font-size: 0.8em;
 }
+
+.plain {
+    background: none !important;
+}
+
+.reveal pre code {
+    max-height: 350px;
+}
