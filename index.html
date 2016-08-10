@@ -50,7 +50,7 @@
 				<!-- 3. What will we be talking about -->
 				<section data-markdown>
 					<script type="text/template">
-						## What will we be talking about?
+						## Agenda
 						<ul>
 						<li class="fragment">Background
 							<ul>
@@ -132,7 +132,7 @@
 					</section>
 					<section data-markdown>
 						<script type="text/template">
-							"If it moves, graph it" - Etsy
+							"If Engineering at Etsy has a religion, it’s the Church of Graphs. If it moves, we track it. Sometimes we’ll draw a graph of something that isn’t moving yet, just in case it decides to make a run for it." - https://codeascraft.com/2011/02/15/measure-anything-measure-everything/
 						</script>
 					</section>
 					<section data-markdown>
@@ -580,6 +580,7 @@
 							<img
 								src="images/Mpchadwick_PageCacheHitRate.png"
 								style="width: 70%; height: auto">
+							<p class="smaller">https://github.com/mpchadwick/Mpchadwick_PageCacheHitRate</p>
 						</script>
 					</section>
 					<section data-markdown>
@@ -705,10 +706,10 @@
 						<script type="text/template">
 						## Where Should We Keep Track?
 						<ul>
-							<li class="fragment">**File** - Useful for local profiling / review. Not intended for long term production use.</li>
-							<li class="fragment">**New Relic** - SaaS monitoring tool. Capable of storing high cardinality data. **Insights not currently hooked up to alerting suite**</li>
+							<li class="fragment">**File** - Useful for local profiling. Not intended for long term production use.</li>
+							<li class="fragment">**New Relic** - SaaS. Can store high cardinality data. **Insights not hooked up to alerting**</li>
 							<li class="fragment">**Redis** - Temporary storage intended to be scraped and stored elsewhere in time series.</li>
-							<li class="fragment">**Other** - `Mpchadwick_PageCacheHitRate` allows you to keep track of you hit rate however you'd like. Add your own tracker by implementing `Mpchadwick_PageCacheHitRate_Model_TrackerInterface`.</li>
+							<li class="fragment">**Other** - `Mpchadwick_PageCacheHitRate` allows you to keep track of you hit rate however you'd like by implementing an interface</li>
 						</ul>
 						</script>
 					</section>
@@ -716,7 +717,7 @@
 						<script type="text/template">
 							### Open Source Time Series Databases
 							<ul>
-								<li>**InfluxDB**
+								<li class="fragment">**InfluxDB**
 									<ul>
 										<li class="fragment">HTTP endpoint accepts writes (and other queries)</li>
 										<li class="fragment">Measurements, tags and fields</li>
@@ -724,7 +725,6 @@
 										<li class="fragment">Alerting via Kapacitor</li>
 										<li class="fragment">Retention Policies</li>
 										<li class="fragment">Continuous Queries</li>
-										<li class="fragment">Open source Magento 1 Connector</li>
 										<li class="fragment">Written in Go</li>
 										<li class="fragment">Need to be mindful of series cardinality</li>
 									</ul>
@@ -736,7 +736,7 @@
 						<script type="text/template">
 							### Open Source Time Series Databases
 							<ul>
-								<li>**Prometheus**
+								<li class="fragment">**Prometheus**
 									<ul>
 										<li class="fragment">Sends HTTP request to pull in metrics from "targets"</li>
 										<li class="fragment">Metrics, labels and values</li>
@@ -747,6 +747,15 @@
 									</ul>
 								</li>
 							</ul>
+						</script>
+					</section>
+					<section data-markdown>
+						<script type="text/template">
+							### SomethingDigital_InfluxDb
+							<img
+								src="images/SomethingDigital_InfluxDb.png"
+								style="width: 70%; height: auto">
+							<p class="smaller">https://github.com/sdinteractive/SomethingDigital_InfluxDb</p>
 						</script>
 					</section>
 				</section>
@@ -793,13 +802,13 @@
                     <section data-markdown>
                         <script type="text/template">
                             ### Have you ever seen a URL that looks like this?
-                            <h5 class="fragment">http://www.example.com?gclid=uniqueidentifier</h5>
+                            <p class="fragment">http://www.example.com?gclid=uniqueidentifier</p>
                         </script>
                     </section>
                     <section data-markdown>
                         <script type="text/template">
                             ### How about this?
-                             <h5 class="fragment">http://www.example.com?utm_medium=email&utm_campgain=my-camapaign&utm_content=link-1</h5>
+                             <p class="fragment">http://www.example.com?utm_medium=email&utm_campgain=my-camapaign&utm_content=link-1</p>
                         </script>
                     </section>
                     <section data-markdown>
@@ -858,6 +867,7 @@
                             <img
 								src="images/SomethingDigital_PageCacheParams.png"
 								style="width: 70%; height: auto">
+							<p class="smaller">https://github.com/sdinteractive/SomethingDigital_PageCacheParams</p>
                         </script>
                     </section>
                     <section data-markdown>
@@ -866,6 +876,7 @@
                             <img
 								src="images/query-string-usage.png"
 								style="width: 70%; height: auto">
+							<p class="smaller">https://gist.github.com/mpchadwick/6c2313eda1ec6d42c8b97ed70fc5a55f</p>
                         </script>
                     </section>
                     <section data-markdown>
@@ -906,7 +917,7 @@
 					</section>
 					<section data-markdown>
 						<script type="text/template">
-						### No cache containers preventing full hits from happening, period.
+						### No cache containers
 						```xml
 						<!-- app/code/community/My/Module/etc/cache.xml-->
 						<?xml version="1.0"?>
@@ -937,7 +948,6 @@
 						    </default>
 						</layout>
 						```
-						> More common than you might think.
 						</script>
 					</section>
 					<section data-markdown>
@@ -946,6 +956,7 @@
                             <img
 								src="images/SomethingDigital_PageCacheUtils.png"
 								style="width: 70%; height: auto">
+							<p class="smaller">https://github.com/sdinteractive/SomethingDigital_PageCacheUtils</p>
                         </script>
                     </section>
                     <section data-markdown>
@@ -1010,11 +1021,24 @@
                         </script>
                     </section>
                 </section>
-                 <!-- 11. Questions? -->
+                <!-- 11. Questions? -->
                 <section>
                     <section data-markdown>
                         <script type="text/template">
                             ## Questions?
+                        </script>
+                    </section>
+                 </section>
+                 <!-- 11. Thank you! -->
+                <section>
+                    <section data-markdown>
+                        <script type="text/template">
+                            ## Thank you!
+                            <br>
+                            <br>
+                            <p class="smaller">http://maxchadwick.xyz/<br>
+                            https://github.com/mpchadwick<br>
+                            https://twitter.com/maxpchadwick</p>
                         </script>
                     </section>
                  </section>

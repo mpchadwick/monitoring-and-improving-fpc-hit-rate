@@ -289,3 +289,6 @@ body {
 .toc .active {
   font-weight: bold;
   color: moccasin; }
+
+.smaller a {
+  font-size: 0.8em; }
