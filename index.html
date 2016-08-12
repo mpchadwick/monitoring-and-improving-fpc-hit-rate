@@ -28,7 +28,7 @@
 				<section data-markdown data-background="images/2008-07-16_IMGP7587.jpg" style="color: white;">
 					<script type="text/template">
 						<div class="cover-content">
-						<h2>Monitoring (and Improving) your Full Page Cache Hit Rate</h2>
+						<h2>Monitoring (and improving) your Full Page Cache Hit Rate</h2>
 						<h4>with `Enterprise_PageCache`</h4>
 						</div>
 					</script>
@@ -356,15 +356,6 @@
 						        ->setActionName('process')
 						        ->isStraight(true);
 
-						    // restore original routing info
-						    $routingInfo = array(
-						        'aliases'              => $this->getMetadata('routing_aliases'),
-						        'requested_route'      => $this->getMetadata('routing_requested_route'),
-						        'requested_controller' => $this->getMetadata('routing_requested_controller'),
-						        'requested_action'     => $this->getMetadata('routing_requested_action')
-						    );
-
-						    Mage::app()->getRequest()->setRoutingInfo($routingInfo);
 						    return false;
 						}
 						```
@@ -384,7 +375,16 @@
 					</section>
 					<section data-markdown>
 						<script type="text/template">
-							### Before the front controller sends the response...
+						## Request Flow
+						<img
+								class="plain"
+								src="images/getting-there.svg"
+								style="height: auto">
+						</script>
+					</section>
+					<section data-markdown>
+						<script type="text/template">
+							### Before sending the response...
 							```xml
 							<!-- app/code/core/Enterprise/PageCache/etc/config.xml -->
 							<controller_front_send_response_before>
@@ -396,6 +396,11 @@
 							    </observers>
 							</controller_front_send_response_before>
 							```
+							<img
+								class="plain"
+								src="images/getting-there-2.svg"
+								style="height: auto">
+						</script>
 						</script>
 					</section>
 					<section data-markdown>
@@ -412,11 +417,15 @@
 							$this->_processor->processRequestResponse($request, $response);
 							return $this;
 							```
+							<img
+								class="plain"
+								src="images/getting-there-3.svg"
+								style="height: auto">
 						</script>
 					</section>
 					<section data-markdown>
 						<script type="text/template">
-							### How `Enterprise_PageCache` processes the `RequestResponse`...
+							### The processor...
 							```php
 							if ($this->canProcessRequest($request)) {
 							    $processor = $this->getRequestProcessor($request);
@@ -447,11 +456,15 @@
 							    }
 							}
 							```
+							<img
+								class="plain"
+								src="images/getting-there-4.svg"
+								style="height: auto">
 						</script>
 					</section>
 					<section data-markdown>
 						<script type="text/template">
-							### How `Enterprise_PageCache` determines if it `canProcessRequest`...
+							### Can we process the request?
 							```php
 							// Enterprise_PageCache_Model_Processor::canProcessRequest()
 							$res = $this->isAllowed();
@@ -474,11 +487,15 @@
 							}
 							return $res;
 							```
+							<img
+								class="plain"
+								src="images/getting-there-5.svg"
+								style="height: auto">
 						</script>
 					</section>
 					<section data-markdown>
 						<script type="text/template">
-							### How `Enterprise_PageCache` determines if it `isAllowed`...
+							### Are we allowed?
 							```php
 							// Enterprise_PageCache_Model_Processor::isAllowed()
 							if (!$this->_requestId) {
@@ -499,11 +516,15 @@
 
 							return true;
 							```
+							<img
+								class="plain"
+								src="images/getting-there-6.svg"
+								style="height: auto">
 						</script>
 					</section>
 					<section data-markdown>
 						<script type="text/template">
-							### How `Enterprise_PageCache` gets the `_requestProcessor`...
+							### Getting the `_requestProcessor`
 							```php
 							// Enterprise_PageCache_Model_Processor::getRequestProcessor()
 							$configuration = Mage::getConfig()->getNode(self::XML_NODE_ALLOWED_CACHE);
@@ -526,11 +547,15 @@
 							    $this->_requestProcessor = Mage::getModel($model);
 							}
 							```
+							<img
+								class="plain"
+								src="images/getting-there-7.svg"
+								style="height: auto">
 						</script>
 					</section>
 					<section data-markdown>
 						<script type="text/template">
-							### `_requestProcessor`s that ship with `Enterprise_PageCache`.
+							### `_requestProcessor` Config
 							```xml
 							<!-- app/code/core/Enterprise/PageCache/etc/config.xml -->
 							<cache>
@@ -550,11 +575,15 @@
 							    </requests>
 							</cache>
 							```
+							<img
+								class="plain"
+								src="images/getting-there-7.svg"
+								style="height: auto">
 						</script>
 					</section>
 					<section data-markdown>
 						<script type="text/template">
-							### The `_requestProcessor` has a say (again)
+							### The `_requestProcessor`'s say
 							```php
 							// Enterprise_PageCache_Model_Processor_Default::allowCache()
 							foreach ($this->_noCacheGetParams as $param) {
@@ -569,6 +598,10 @@
 							}
 							$this->_allowCache = true;
 							```
+							<img
+								class="plain"
+								src="images/getting-there-8.svg"
+								style="height: auto">
 						</script>
 					</section>
 				</section>
@@ -820,11 +853,6 @@
 							<li class="active">Improving Hit Rate</li>
 							<li>Questions</li>
 							</ul>
-						</script>
-					</section>
-					<section data-markdown>
-						<script type="text/template">
-							Once you have monitoring in place, the next thing to do is make efforts to improve your hit rate.
 						</script>
 					</section>
                     <section data-markdown>
