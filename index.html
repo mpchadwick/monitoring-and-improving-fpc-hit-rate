@@ -1132,5 +1132,15 @@
 				]
 			});
 		</script>
+		<script>
+			var q = window.location.search;
+			if (q) {
+				var mode = q.split('?mode=')[1]
+				var nodes = document.querySelectorAll('[data-not="' + mode + '"]')
+				Array.prototype.forEach.call(nodes, function(node) {
+					node.parentNode.removeChild(node);
+				});
+			}
+		</script>
 	</body>
 </html>
