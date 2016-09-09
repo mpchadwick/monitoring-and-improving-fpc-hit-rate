@@ -52,3 +52,7 @@ $selectionBackgroundColor: rgba(0, 0, 0, 0.99);
 .reveal pre code {
     max-height: 300px;
 }
+
+[data-is] {
+    display: none;
+}
