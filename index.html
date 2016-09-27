@@ -60,7 +60,7 @@
 							</ul>
 						</li>
 						<li class="fragment">`Enterprise_PageCache` Internals
-							<ul>
+							<ul data-not="30m">
 								<li class="fragment">How do we hit it?</li>
 								<li class="fragment">How does it get there in the first place?</li>
 							</ul>
@@ -160,7 +160,7 @@
 								</ul>
 							</li>
 							<li><span class="active">`Enterprise_PageCache` Internals</span>
-								<ul>
+								<ul data-not="30m">
 									<li>How do we hit it?</li>
 									<li>How does it get there in the first place?</li>
 								</ul>
@@ -176,12 +176,12 @@
 							</ul>
 						</script>
 					</section>
-					<section data-markdown>
+					<section data-markdown data-not="30m">
 						<script type="text/template">
 							If you want to know how to monitor and improve Full Page Cache hit rate, you first need to understand how Full Page Cache works.
 						</script>
 					</section>
-					<section data-markdown>
+					<section data-markdown data-not="30m">
 						<script type="text/template">
 						## How Do We Hit It?
 						</script>
@@ -247,7 +247,7 @@
 								style="height: auto">
 						</script>
 					</section>
-					<section data-markdown>
+					<section data-markdown data-not="30m">
 						<script type="text/template">
 						### Extracting Content
 						```php
@@ -343,7 +343,7 @@
 					<section data-markdown>
 						<script type="text/template">
 						<h3 data-not="30m">The second moment of truth...</h3>
-						<h3 data-is="30m">Processing the content</h3>
+						<h3 data-is="30m">Filling in holes</h3>
 						```php
 						// Enterprise_PageCache_Model_Processor_Default::_processContent()
 						$containers = $this->_processContainers($content);
@@ -373,7 +373,7 @@
 				</section>
 				<!-- 7. How Does It Get There In The First Place? -->
 				<section>
-					<section data-markdown>
+					<section data-markdown data-not="30m">
 						<script type="text/template">
 							## But How Does It Get There In The First Place?
 						</script>
@@ -428,10 +428,11 @@
 								style="height: auto">
 						</script>
 					</section>
-					<section data-markdown>
+					<section data-markdown data-not="30m">
 						<script type="text/template">
 							### The processor...
 							```php
+							Enterprise_PageCache_Model_Processor::processRequestResponse()
 							if ($this->canProcessRequest($request)) {
 							    $processor = $this->getRequestProcessor($request);
 							    if ($processor && $processor->allowCache($request)) {
@@ -468,7 +469,33 @@
 								style="height: auto">
 						</script>
 					</section>
-					<section data-markdown>
+					<section data-markdown data-is="30m">
+						<script type="text/template">
+							### Max Cache Size
+							```php
+							// Enterprise_PageCache_Model_Processor::processRequestResponse()
+							$contentSize = strlen($content);
+							$currentStorageSize = (int) $cacheInstance->load(self::CACHE_SIZE_KEY);
+
+							$maxSizeInBytes = Mage::getStoreConfig(self::XML_PATH_CACHE_MAX_SIZE) * 1024 * 1024;
+
+							if ($currentStorageSize >= $maxSizeInBytes) {
+							Mage::app()->getCacheInstance()->invalidateType('full_page');
+							return $this;
+							}
+
+							$cacheInstance->save($content, $cacheId, $this->getRequestTags());
+
+							$cacheInstance->save(
+							$currentStorageSize + $contentSize,
+							self::CACHE_SIZE_KEY,
+							$this->getRequestTags()
+							);
+							$this->_saveMetadata();
+							```
+						</script>
+					</section>
+					<section data-markdown data-not="30m">
 						<script type="text/template">
 							### Can we process the request?
 							```php
@@ -498,6 +525,20 @@
 								class="plain"
 								src="images/getting-there-5.svg"
 								style="height: auto">
+						</script>
+					</section>
+					<section data-markdown data-is="30m">
+						<script type="text/template">
+							### Max depth
+							```php
+							// Enterprise_PageCache_Model_Processor::canProcessRequest()
+							$maxDepth = Mage::getStoreConfig(self::XML_PATH_ALLOWED_DEPTH);
+							$queryParams = $request->getQuery();
+							unset($queryParams[Enterprise_PageCache_Model_Cache::REQUEST_MESSAGE_GET_PARAM]);
+							$res = count($queryParams)<=$maxDepth;
+
+							return $res;
+							```
 						</script>
 					</section>
 					<section data-markdown data-not="30m">
@@ -627,7 +668,7 @@
 								</ul>
 							</li>
 							<li>`Enterprise_PageCache` Internals
-								<ul>
+								<ul data-not="30m">
 									<li>How do we hit it?</li>
 									<li>How does it get there in the first place?</li>
 								</ul>
@@ -847,7 +888,7 @@
 								</ul>
 							</li>
 							<li>`Enterprise_PageCache` Internals
-								<ul>
+								<ul data-not="30m">
 									<li>How do we hit it?</li>
 									<li>How does it get there in the first place?</li>
 								</ul>
