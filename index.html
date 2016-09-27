@@ -942,19 +942,21 @@
                     </section>
                     <section data-markdown>
                         <script type="text/template">
-                            ### Recall this...
-                            ```php
-                            // Enterprise_PageCache_Model_Processor_Default::getPageIdWithoutApp()
-                            $queryParams = $_GET;
-                            ksort($queryParams);
-                            $queryParamsHash = md5(serialize($queryParams));
-                            return $processor->getRequestId() . '_' . $queryParamsHash;
+							<h3 data-not="30m">Recall this...</h3>
+							<h3 data-is="30m">Query Param Influence</h3>
+							```php
+							// Enterprise_PageCache_Model_Processor_Default::getPageIdWithoutApp()
+							$queryParams = $_GET;
+							ksort($queryParams);
+							$queryParamsHash = md5(serialize($queryParams));
+							return $processor->getRequestId() . '_' . $queryParamsHash;
                             ```
                         </script>
                     </section>
                     <section data-markdown>
                         <script type="text/template">
-                            ### Also, recall this...
+                            <h3 data-not="30m">Also, recall this...</h3>
+							<h3 data-is="30m">Max Depth</h3>
                             ```php
                             // Enterprise_PageCache_Model_Processor_Default::canProcessRequest()
                             $maxDepth = Mage::getStoreConfig(self::XML_PATH_ALLOWED_DEPTH);
@@ -973,8 +975,6 @@
                                 <system>
                                     <page_cache>
                                         <allowed_depth>1</allowed_depth>
-                                        <multicurrency>1</multicurrency>
-                                        <max_cache_size>1024</max_cache_size>
                                     </page_cache>
                                 </system>
                             </default>
@@ -1008,7 +1008,7 @@
 							<p class="smaller">https://gist.github.com/mpchadwick/6c2313eda1ec6d42c8b97ed70fc5a55f</p>
                         </script>
                     </section>
-                    <section data-markdown>
+                    <section data-markdown data-not="30m">
 						<script type="text/template">
 						### Personalization vs performance
 						```php
@@ -1025,7 +1025,7 @@
 						```
 						</script>
 					</section>
-					<section data-markdown>
+					<section data-markdown data-not="30m">
 						<script type="text/template">
 						### Other compromises
 						<ul>
@@ -1088,7 +1088,7 @@
 							<p class="smaller">https://github.com/sdinteractive/SomethingDigital_PageCacheUtils</p>
                         </script>
                     </section>
-                    <section data-markdown>
+                    <section data-markdown data-not="30m">
                         <script type="text/template">
                             ### Impact of admin activity...
                             <ul>
@@ -1112,9 +1112,9 @@
                             <ul>
                             <li class="fragment">Set up a separate Redis instance</li>
                             <li class="fragment">Set `maxmemory` appropriately</li>
+                            <li class="fragment">Understand that FPC doesn't expire</li>
                             <li class="fragment">Understand `maxmemory-policy`</li>
                             <li class="fragment">Understand `maxmemory-samples`</li>
-                            <li class="fragment">Understand that FPC doesn't expire</li>
                             <li class="fragment">Upgrade Redis!</li>
                             </ul>
                         </script>
@@ -1127,8 +1127,6 @@
                             <default>
                                 <system>
                                     <page_cache>
-                                        <allowed_depth>1</allowed_depth>
-                                        <multicurrency>1</multicurrency>
                                         <max_cache_size>1024</max_cache_size>
                                     </page_cache>
                                 </system>
@@ -1149,9 +1147,9 @@
 	                            <li class="fragment">Increase max depth setting</li>
 	                            <li class="fragment">Replace / customize non-FPC compatible 3rd party modules</li>
 	                            <li class="fragment">Cache **all** containers</li>
-	                            <li class="fragment">Compromise with marketing team</li>
-	                            <li class="fragment">Compromise with merchandising team</li>
-	                            <li class="fragment">Limit admin activity</li>
+	                            <li class="fragment" data-not="30m">Compromise with marketing team</li>
+	                            <li class="fragment" data-not="30m">Compromise with merchandising team</li>
+	                            <li class="fragment" data-not="30m">Limit admin activity</li>
 	                            <li class="fragment">Tune your FPC backend</li>
 	                            <li class="fragment">Tune the Max. Cache Size setting</li>
 	                            <li class="fragment">Consider if warming the cache would help</li>
