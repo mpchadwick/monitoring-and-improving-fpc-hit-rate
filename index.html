@@ -487,9 +487,9 @@
 							$cacheInstance->save($content, $cacheId, $this->getRequestTags());
 
 							$cacheInstance->save(
-							$currentStorageSize + $contentSize,
-							self::CACHE_SIZE_KEY,
-							$this->getRequestTags()
+								$currentStorageSize + $contentSize,
+								self::CACHE_SIZE_KEY,
+								$this->getRequestTags()
 							);
 							$this->_saveMetadata();
 							```
