@@ -106,7 +106,7 @@
 							</ul>
 						</script>
 					</section>
-					<section data-markdown>
+					<section data-markdown data-not="30m">
 						<script type="text/template">
 							### Benchmarks
 							<p>"It typically speeds up delivery with a factor of 300 - 1000x, depending on your architecture." - https://varnish-cache.org/intro/</p>
@@ -345,7 +345,7 @@
 						<h3 data-not="30m">The second moment of truth...</h3>
 						<h3 data-is="30m">Filling in holes</h3>
 						```php
-						// Enterprise_PageCache_Model_Processor_Default::_processContent()
+						// Enterprise_PageCache_Model_Processor::_processContent()
 						$containers = $this->_processContainers($content);
 						$isProcessed = empty($containers);
 
