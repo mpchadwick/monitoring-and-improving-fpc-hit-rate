@@ -480,8 +480,8 @@
 							$maxSizeInBytes = Mage::getStoreConfig(self::XML_PATH_CACHE_MAX_SIZE) * 1024 * 1024;
 
 							if ($currentStorageSize >= $maxSizeInBytes) {
-							Mage::app()->getCacheInstance()->invalidateType('full_page');
-							return $this;
+								Mage::app()->getCacheInstance()->invalidateType('full_page');
+								return $this;
 							}
 
 							$cacheInstance->save($content, $cacheId, $this->getRequestTags());
