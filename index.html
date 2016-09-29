@@ -275,7 +275,7 @@
 								style="height: auto">
 						</script>
 					</section>
-					<section data-markdown>
+					<section data-markdown data-not="30m">
 						<script type="text/template">
 						### The `requestCacheId`
 						```php
@@ -317,10 +317,26 @@
 						$this->_requestCacheId = $this->prepareCacheId($this->_requestId);
 						```
 						<img
-								data-not="30m"
 								class="plain"
 								src="images/hitting-page-cache-4.svg"
 								style="height: auto">
+						</script>
+					</section>
+					<section data-markdown data-is="30m">
+						<script type="text/template">
+						### The `requestCacheId`
+						```php
+						// Enterprise_PageCache_Model_Processor::_createRequestIds()
+						if (isset($_COOKIE[Enterprise_PageCache_Model_Cookie::COOKIE_CUSTOMER_GROUP])) {
+						    $uri .= '_' . $_COOKIE[Enterprise_PageCache_Model_Cookie::COOKIE_CUSTOMER_GROUP];
+						}
+						if (isset($_COOKIE[Enterprise_PageCache_Model_Cookie::COOKIE_CUSTOMER_LOGGED_IN])) {
+						    $uri .= '_' . $_COOKIE[Enterprise_PageCache_Model_Cookie::COOKIE_CUSTOMER_LOGGED_IN];
+						}
+						if (isset($_COOKIE[Enterprise_PageCache_Model_Cookie::CUSTOMER_SEGMENT_IDS])) {
+						    $uri .= '_' . $_COOKIE[Enterprise_PageCache_Model_Cookie::CUSTOMER_SEGMENT_IDS];
+						}
+						```
 						</script>
 					</section>
 					<section data-markdown data-not="30m">
