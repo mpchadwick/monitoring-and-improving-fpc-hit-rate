@@ -826,7 +826,6 @@
 										<li class="fragment">Hostname</li>
 									</ul>
                             </li>
-                            <li class="fragment">Extendable API</li>
                             </ul>
 						</script>
 					</section>
@@ -838,7 +837,8 @@
 						## Where Should We Keep Track?
 						<ul>
 							<li class="fragment">**File** - Useful for local profiling. Not intended for long term production use.</li>
-							<li class="fragment">**New Relic** - SaaS. Can store high cardinality data. **Insights not hooked up to alerting**</li>
+							<li class="fragment" data-not="30m">**New Relic** - SaaS. Can store high cardinality data. **Insights not hooked up to alerting**</li>
+							<li class="fragment" data-is="30m">**New Relic** - SaaS. **Insights not hooked up to alerting**</li>
 							<li class="fragment">**Redis** - Temporary storage intended to be scraped and stored elsewhere in time series.</li>
 							<li class="fragment">**Other** - `Mpchadwick_PageCacheHitRate` allows you to keep track of you hit rate however you'd like by implementing an interface</li>
 						</ul>
@@ -857,7 +857,7 @@
 										<li class="fragment">Retention Policies</li>
 										<li class="fragment">Continuous Queries</li>
 										<li class="fragment">Written in Go</li>
-										<li class="fragment">Need to be mindful of series cardinality</li>
+										<li class="fragment" data-not="30m">Need to be mindful of series cardinality</li>
 									</ul>
 								</li>
 							</ul>
